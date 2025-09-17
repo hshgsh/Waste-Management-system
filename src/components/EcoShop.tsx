@@ -103,7 +103,8 @@ const EcoShop = () => {
     }
   ];
 
-  const facilityTypes = {
+  type FacilityType = 'waste-to-energy' | 'biomethanization' | 'scrap-shop' | 'recycling' | 'local-shop';
+  const facilityTypes: Record<FacilityType, { color: string; icon: React.ElementType; label: string }> = {
     'waste-to-energy': { color: '#ef4444', icon: Factory, label: 'Waste-to-Energy' },
     'biomethanization': { color: '#f59e0b', icon: Factory, label: 'Bio Gas Unit' },
     'scrap-shop': { color: '#10b981', icon: Store, label: 'Scrap Shop' },
@@ -118,7 +119,8 @@ const EcoShop = () => {
     facility.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const addToCart = (product) => {
+  type ProductType = typeof products[0];
+  const addToCart = (product: ProductType) => {
     const existingItem = cart.find(item => item.id === product.id);
     if (existingItem) {
       setCart(cart.map(item => 
@@ -131,7 +133,7 @@ const EcoShop = () => {
     }
   };
 
-  const updateQuantity = (productId, change,) => {
+  const updateQuantity = (productId: number, change: number) => {
     setCart(cart
       .map(item => {
         if (item.id === productId) {
@@ -153,7 +155,7 @@ const EcoShop = () => {
     setShowCheckout(true);
   };
 
-  const handlePayment = (method) => {
+  const handlePayment = (method: string) => {
     alert(`Payment successful via ${method}! Order confirmed.`);
     setCart([]);
     setShowCheckout(false);
@@ -240,7 +242,7 @@ const EcoShop = () => {
             
             {/* Facilities */}
             {filteredFacilities.map((facility) => {
-              const config = facilityTypes[facility.type];
+              const config = facilityTypes[facility.type as FacilityType];
               const IconComponent = config.icon;
               return (
                 <div
@@ -347,7 +349,7 @@ const EcoShop = () => {
           {/* Facility List */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredFacilities.slice(0, 6).map((facility) => {
-              const config = facilityTypes[facility.type];
+              const config = facilityTypes[facility.type as FacilityType];
               const IconComponent = config.icon;
               return (
                 <div key={facility.id} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
