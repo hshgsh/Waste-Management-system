@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Sun, LogIn, User } from 'lucide-react';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
@@ -9,9 +10,19 @@ interface HeaderProps {
   onNavigate?: (page: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => {
+const Header: React.FC<HeaderProps> = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
   const handleLoginSuccess = (user: any) => {
     setUserData(user);
     setIsLoggedIn(true);
-    setIsLoginOpen(false);
+    // Modal handled by router
   };
 
   const handleSignupSuccess = (user: any) => {
@@ -38,14 +49,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
     setShowUserMenu(false);
   };
 
-  const handleNavigation = (page: string) => {
-    if (onNavigate) {
-      onNavigate(page);
-    }
-    setIsMenuOpen(false);
-    setShowServicesDropdown(false);
-    setShowCompanyDropdown(false);
-  };
+
 
   const servicesDropdownItems = [
     { title: 'For Individuals', items: ['Scrap Collection', 'Zero Waste Society', 'Vehicle Scrapping'] },
@@ -57,19 +61,16 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
 
   return (
     <>
-      <header className="fixed top-0 w-full bg-green-950 backdrop-blur-sm z-50">
+  <header className={`fixed top-0 w-full z-50 transition-colors duration-700 backdrop-blur-sm opacity-85 ${scrolled ? 'bg-green-500 shadow-md' : 'bg-transparent'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <div 
-              className="flex items-center space-x-2 cursor-pointer"
-              onClick={() => handleNavigation('home')}
-            >
-              <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">E</span>
+            <Link to="/" className="flex items-center space-x-2 cursor-pointer">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                <span className="text-black font-bold text-xl"></span>
               </div>
-              <span className="text-2xl font-bold text-white">Eco-saviors</span>
-            </div>
+              <span className="text-2xl font-bold text-emerald-950">Eco-saviors</span>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
@@ -79,13 +80,14 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
                 onMouseEnter={() => setShowServicesDropdown(true)}
                 onMouseLeave={() => setShowServicesDropdown(false)}
               >
-                <button
-                  onClick={() => handleNavigation('services')}
-                  className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors duration-200 font-medium"
+                <Link
+                  to="/services"
+                  className="flex items-center space-x-1 text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
+                  onClick={() => setShowServicesDropdown(!showServicesDropdown)}
                 >
                   <span>Services</span>
                   <ChevronDown className="h-4 w-4" />
-                </button>
+                </Link>
                 
                 {showServicesDropdown && (
                   <div className="absolute top-full left-0 mt-2 w-96 bg-black/90 backdrop-blur-sm rounded-lg shadow-xl border border-gray-700 p-6">
@@ -115,13 +117,14 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
                 onMouseEnter={() => setShowCompanyDropdown(true)}
                 onMouseLeave={() => setShowCompanyDropdown(false)}
               >
-                <button
-                  onClick={() => handleNavigation('company')}
-                  className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors duration-200 font-medium"
+                <Link
+                  to="/company"
+                  className="flex items-center space-x-1  text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
+                  onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}
                 >
                   <span>Company</span>
                   <ChevronDown className="h-4 w-4" />
-                </button>
+                </Link>
                 
                 {showCompanyDropdown && (
                   <div className="absolute top-full left-0 mt-2 w-48 bg-black/90 backdrop-blur-sm rounded-lg shadow-xl border border-gray-700 p-4">
@@ -139,19 +142,19 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
               </div>
 
               {/* Training */}
-              <button
-                onClick={() => handleNavigation('training')}
-                className="text-white hover:text-green-400 transition-colors duration-200 font-medium"
+              <Link
+                to="/training"
+                className=" text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
               >
                 Training
-              </button>
+              </Link>
                  {/* Shopping */}
-            <button
-              onClick={() => handleNavigation('shopping')}
-              className="text-white hover:text-green-400 transition-colors duration-200 font-medium"
+            <Link
+              to="/shopping"
+              className=" text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
             >
               Shopping
-            </button>
+            </Link>
             </div>
 
             {/* Right Side Actions */}
@@ -160,13 +163,15 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
               
               {/* Login/User Section */}
               {!isLoggedIn ? (
-                <button
-                  onClick={() => setIsLoginOpen(true)}
-                  className="flex items-center space-x-2 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-all duration-200"
-                >
-                  <LogIn className="h-4 w-4" />
-                  <span>Login</span>
-                </button>
+                <>
+                  <button
+                    onClick={() => navigate('/login')}
+                    className="flex items-center space-x-2 bg-green-800 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-all duration-200"
+                  >
+                    <LogIn className="h-4 w-4" />
+                    <span>Login</span>
+                  </button>
+                </>
               ) : (
                 <div className="relative">
                   <button
@@ -222,43 +227,36 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 bg-black/90 backdrop-blur-sm border-t border-gray-700 rounded-b-lg">
-                <button
-                  onClick={() => handleNavigation('services')}
+                <Link
+                  to="/services"
                   className="block px-3 py-2 text-white hover:text-green-400 transition-colors duration-200 w-full text-left"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Services
-                </button>
-                <button
-                  onClick={() => handleNavigation('company')}
+                </Link>
+                <Link
+                  to="/company"
                   className="block px-3 py-2 text-white hover:text-green-400 transition-colors duration-200 w-full text-left"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Company
-                </button>
-                <button
-                  onClick={() => handleNavigation('training')}
+                </Link>
+                <Link
+                  to="/training"
                   className="block px-3 py-2 text-white hover:text-green-400 transition-colors duration-200 w-full text-left"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Training
-                </button>
-                <button
-                  onClick={() => handleNavigation('shopping')}
+                </Link>
+                <Link
+                  to="/shopping"
                   className="block px-3 py-2 text-white hover:text-green-400 transition-colors duration-200 w-full text-left"
+                  onClick={() => setIsMenuOpen(false)}
                 >
                   Shopping
-                </button>
+                </Link>
                 
-                {!isLoggedIn ? (
-                  <button
-                    onClick={() => {
-                      setIsLoginOpen(true);
-                      setIsMenuOpen(false);
-                    }}
-                    className="flex items-center space-x-2 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 w-full mt-2"
-                  >
-                    <LogIn className="h-4 w-4" />
-                    <span>Login</span>
-                  </button>
-                ) : (
+                {!isLoggedIn ? null : (
                   <div className="space-y-2 mt-2">
                     <button
                       onClick={() => {
@@ -292,22 +290,13 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
       </header>
 
       {/* Modals */}
-      <LoginModal 
-        isOpen={isLoginOpen} 
-        onClose={() => setIsLoginOpen(false)}
-        onLoginSuccess={handleLoginSuccess}
-        onSwitchToSignup={() => {
-          setIsLoginOpen(false);
-          setIsSignupOpen(true);
-        }}
-      />
+      {/* LoginModal handled by router at /login */}
       <SignupModal 
         isOpen={isSignupOpen} 
         onClose={() => setIsSignupOpen(false)}
         onSignupSuccess={handleSignupSuccess}
         onSwitchToLogin={() => {
           setIsSignupOpen(false);
-          setIsLoginOpen(true);
         }}
       />
       <UserProfile
@@ -315,7 +304,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage = 'home', onNavigate }) => 
         onClose={() => setIsProfileOpen(false)}
         userData={userData}
       />
-    </>
+  </>
   );
 };
 

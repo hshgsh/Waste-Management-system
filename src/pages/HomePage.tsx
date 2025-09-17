@@ -13,7 +13,7 @@ import { User } from 'lucide-react';
 const HomePage = () => {
   return (
     <div className="min-h-screen">
-      <Hero />
+      <Hero/>
       <WasteManagement />
       <EcoShop/>
       <EconomicImpact />
@@ -21,7 +21,7 @@ const HomePage = () => {
       <Contact />
       <Footer />
       <Chatbot />
-    </div>
+    </div>  
   );
 };
 
