@@ -1,14 +1,18 @@
 import React from 'react';
-import { User, Mail, Calendar, Award, TrendingUp, X } from 'lucide-react';
+import { User, Mail, Calendar, Award, TrendingUp, X, Trophy, Star } from 'lucide-react';
 
 interface UserData {
+  id: number;
   name: string;
   email: string;
+  phone: string;
   userType: 'user' | 'employee';
   department?: string;
   employeeId?: string;
   joinDate: string;
   avatar: string;
+  points?: number;
+  trainingProgress?: number;
 }
 
 interface UserProfileProps {
@@ -22,10 +26,11 @@ const UserProfile: React.FC<UserProfileProps> = ({ isOpen, onClose, userData }) 
 
   const userStats = {
     user: {
-      totalPoints: 1250,
+      totalPoints: userData.points || 1250,
       tasksCompleted: 24,
       vouchersRedeemed: 5,
-      carbonSaved: 125
+      carbonSaved: 125,
+      rank: 15
     },
     employee: {
       wasteProcessed: 2400,
@@ -36,6 +41,10 @@ const UserProfile: React.FC<UserProfileProps> = ({ isOpen, onClose, userData }) 
   };
 
   const stats = userStats[userData.userType];
+
+  // Type guards for stats
+  const isUserStats = (s: typeof stats): s is typeof userStats.user => userData.userType === 'user';
+  const isEmployeeStats = (s: typeof stats): s is typeof userStats.employee => userData.userType === 'employee';
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -70,6 +79,12 @@ const UserProfile: React.FC<UserProfileProps> = ({ isOpen, onClose, userData }) 
           {userData.department && (
             <p className="text-gray-500 text-sm">{userData.department} Department</p>
           )}
+          {isUserStats(stats) && (
+            <div className="flex items-center justify-center space-x-2 mt-2">
+              <Trophy className="h-4 w-4 text-yellow-500" />
+              <span className="text-sm font-medium text-gray-700">Rank #{stats.rank}</span>
+            </div>
+          )}
         </div>
 
         {/* Profile Info */}
@@ -102,48 +117,68 @@ const UserProfile: React.FC<UserProfileProps> = ({ isOpen, onClose, userData }) 
 
           {/* Stats */}
           <div className="space-y-4">
-            {userData.userType === 'user' ? (
+            {isUserStats(stats) ? (
               <>
                 <div className="p-4 bg-green-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-green-700 font-medium">Total Points</span>
-                   
+                    <span className="text-2xl font-bold text-green-600">{stats.totalPoints}</span>
                   </div>
                 </div>
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-blue-700 font-medium">Tasks Completed</span>
-                    
+                    <span className="text-2xl font-bold text-blue-600">{stats.tasksCompleted}</span>
                   </div>
                 </div>
                 <div className="p-4 bg-purple-50 rounded-lg">
                   <div className="flex items-center justify-between">
-                    <span className="text-purple-700 font-medium">Vouchers Redeemed</span>
-
+                    <span className="text-purple-700 font-medium">CO₂ Saved (kg)</span>
+                    <span className="text-2xl font-bold text-purple-600">{stats.carbonSaved}</span>
                   </div>
                 </div>
               </>
-            ) : (
+            ) : isEmployeeStats(stats) ? (
               <>
                 <div className="p-4 bg-green-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-green-700 font-medium">Waste Processed</span>
-                    
+                    <span className="text-2xl font-bold text-green-600">{stats.wasteProcessed}kg</span>
                   </div>
                 </div>
                 <div className="p-4 bg-blue-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-blue-700 font-medium">Efficiency</span>
-                    
+                    <span className="text-2xl font-bold text-blue-600">{stats.efficiency}%</span>
                   </div>
                 </div>
                 <div className="p-4 bg-orange-50 rounded-lg">
                   <div className="flex items-center justify-between">
                     <span className="text-orange-700 font-medium">Team Rating</span>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-2xl font-bold text-orange-600">{stats.teamRating}</span>
+                      <Star className="h-5 w-5 text-yellow-400 fill-current" />
+                    </div>
                   </div>
                 </div>
               </>
-            )}
+            ) : null}
+          </div>
+        </div>
+
+        {/* Training Progress */}
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-medium text-gray-700">Training Progress</span>
+            <span className="text-sm text-gray-500">{userData.trainingProgress}%</span>
+          </div>
+          <div className="w-full bg-gray-200 rounded-full h-2">
+            <div
+              className={`h-2 rounded-full transition-all duration-500 ${
+                userData.userType === 'user' ? 'bg-green-500' : 'bg-blue-500'
+              }`}
+              style={{ width: `${userData.trainingProgress}%` }}
+            ></div>
           </div>
         </div>
 

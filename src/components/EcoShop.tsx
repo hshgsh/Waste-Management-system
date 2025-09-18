@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Truck, Factory, Recycle, Store, Search, Filter, ShoppingCart, Star, Leaf, Plus, Minus, CreditCard, Wallet, Smartphone } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 
 const EcoShop = () => {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -166,7 +168,7 @@ const EcoShop = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Eco-Shop & Facility Locator</h2>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4"> Facility Locator & Eco-Shop </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Find nearby waste management facilities and shop for eco-friendly products
           </p>
@@ -174,7 +176,7 @@ const EcoShop = () => {
 
         {/* Interactive Map Section */}
         <div className="bg-white rounded-3xl shadow-xl p-8 mb-16">
-          <div className="flex flex-col lg:flex-row gap-6 mb-6">
+          {/* <div className="flex flex-col lg:flex-row gap-6 mb-6">
             <div className="flex-1">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -219,29 +221,62 @@ const EcoShop = () => {
                 </button>
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Enhanced Google-like Map */}
-          <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 h-96 relative overflow-hidden border-2 border-gray-200">
+          {/* <div className="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 h-96 relative overflow-hidden border-2 border-gray-200"> */}
+          <div className="bg-white rounded-2xl shadow-xl p-8">
+                      <h2 className="text-2xl font-bold text-gray-900 mb-6">Scrap Shop's</h2>
+                      
+                      <div className="h-96 rounded-lg overflow-hidden">
+                        <MapContainer
+                          center={[20.5937, 78.9629]} // Center of India
+                          zoom={5}
+                          style={{ height: '100%', width: '100%', zIndex: 0 }}
+                        >
+                          <TileLayer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          />
+                          {/* {complaints.map((complaint) => (
+                            <Marker key={complaint.id} position={[complaint.lat, complaint.lng]}>
+                              <Popup>
+                                <div className="p-2">
+                                  <img
+                                    src={complaint.photo}
+                                    alt="Waste"
+                                    className="w-32 h-24 object-cover rounded mb-2"
+                                  />
+                                  <p className="text-sm font-medium">{complaint.description || 'No description'}</p>
+                                  <p className="text-xs text-gray-500 mt-1">
+                                    Status: {complaint.status}
+                                  </p>
+                                </div>
+                              </Popup>
+                            </Marker>
+                          ))} */}
+                        </MapContainer>
+                      </div>
+                    
             {/* Map Grid Lines */}
-            <div className="absolute inset-0 opacity-20">
+            {/* <div className="absolute inset-0 opacity-20">
               {[...Array(20)].map((_, i) => (
                 <div key={`h-${i}`} className="absolute w-full border-t border-gray-300" style={{ top: `${i * 5}%` }} />
               ))}
               {[...Array(20)].map((_, i) => (
                 <div key={`v-${i}`} className="absolute h-full border-l border-gray-300" style={{ left: `${i * 5}%` }} />
               ))}
-            </div>
+            </div> */}
 
             {/* Roads/Paths */}
-            <svg className="absolute inset-0 w-full h-full">
+            {/* <svg className="absolute inset-0 w-full h-full">
               <path d="M0,200 Q200,150 400,200 T800,180" stroke="#94a3b8" strokeWidth="3" fill="none" opacity="0.6" />
               <path d="M100,0 Q150,200 200,400" stroke="#94a3b8" strokeWidth="2" fill="none" opacity="0.6" />
               <path d="M300,0 L300,400" stroke="#94a3b8" strokeWidth="2" fill="none" opacity="0.6" />
-            </svg>
+            </svg> */}
             
             {/* Facilities */}
-            {filteredFacilities.map((facility) => {
+            {/* {filteredFacilities.map((facility) => {
               const config = facilityTypes[facility.type as FacilityType];
               const IconComponent = config.icon;
               return (
@@ -252,16 +287,16 @@ const EcoShop = () => {
                     left: `${((facility.lng - 72.7) * 15) + 20}%`,
                     top: `${((19.2 - facility.lat) * 25) + 10}%`
                   }}
-                >
-                  <div
+                > */}
+                  {/* <div
                     className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg border-2 border-white"
                     style={{ backgroundColor: config.color }}
                   >
                     <IconComponent className="h-5 w-5 text-white" />
-                  </div>
+                  </div> */}
                   
                   {/* Enhanced Tooltip */}
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                  {/* <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
                     <div className="bg-white border border-gray-200 rounded-lg shadow-xl p-4 text-sm whitespace-nowrap">
                       <div className="font-bold text-gray-900">{facility.name}</div>
                       <div className="text-gray-600 flex items-center mt-1">
@@ -272,13 +307,13 @@ const EcoShop = () => {
                       <div className="text-green-600 font-medium mt-1">{facility.distance} away</div>
                       <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-white"></div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
-              );
-            })}
+              {/* );
+            })} */}
 
             {/* Moving Vehicles with Routes */}
-            {vehicles.map((vehicle) => (
+            {/* {vehicles.map((vehicle) => (
               <div
                 key={vehicle.id}
                 className="absolute animate-pulse"
@@ -296,16 +331,16 @@ const EcoShop = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            ))} */}
 
             {/* Current Location Marker */}
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {/* <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
               <div className="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow-lg animate-ping"></div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-600 rounded-full"></div>
-            </div>
+            </div> */}
 
             {/* Legend */}
-            <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg">
+            {/* <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm rounded-lg p-4 shadow-lg">
               <h4 className="font-semibold text-gray-900 mb-3">Map Legend</h4>
               <div className="space-y-2">
                 {Object.entries(facilityTypes).map(([type, config]) => {
@@ -333,17 +368,17 @@ const EcoShop = () => {
                   <span className="text-gray-700">Your Location</span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Map Controls */}
-            <div className="absolute top-4 right-4 flex flex-col space-y-2">
+            {/* <div className="absolute top-4 right-4 flex flex-col space-y-2">
               <button className="bg-white hover:bg-gray-50 border border-gray-300 rounded-lg p-2 shadow-md transition-colors">
                 <Plus className="h-4 w-4 text-gray-600" />
               </button>
               <button className="bg-white hover:bg-gray-50 border border-gray-300 rounded-lg p-2 shadow-md transition-colors">
                 <Minus className="h-4 w-4 text-gray-600" />
               </button>
-            </div>
+            </div> */}
           </div>
 
           {/* Facility List */}
@@ -587,8 +622,9 @@ const EcoShop = () => {
             </div>
           </div>
         )}
-      </div>
-    </section>
+      {/* </div> */}
+      {/* </div> */}
+    // </section>
   );
 };
 

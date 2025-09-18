@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, User, Briefcase, Mail, Lock, UserPlus } from 'lucide-react';
+import { X, User, Briefcase } from 'lucide-react';
+
 
 interface SignupModalProps {
   isOpen: boolean;
@@ -10,48 +11,36 @@ interface SignupModalProps {
 
 const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, onSignupSuccess, onSwitchToLogin }) => {
   const [userType, setUserType] = useState<'user' | 'employee'>('user');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    department: '',
-    employeeId: ''
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-
+    
+    // Simulate login success
     const userData = {
-      name: formData.name,
-      email: formData.email,
+      id: Date.now(),
+      name: userType === 'user' ? 'John Doe' : 'Sarah Johnson',
+      email,
+      phone: '+91-9876543210',
       userType,
-      department: userType === 'employee' ? formData.department : undefined,
-      employeeId: userType === 'employee' ? formData.employeeId : undefined,
-      joinDate: new Date().toISOString().split('T')[0],
-      avatar: `https://images.pexels.com/photos/${userType === 'employee' ? '3184418' : '3184465'}/pexels-photo-${userType === 'employee' ? '3184418' : '3184465'}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`
+      department: userType === 'employee' ? 'Operations' : undefined,
+      employeeId: userType === 'employee' ? 'EMP001' : undefined,
+      joinDate: '2024-01-15',
+      avatar: `https://images.pexels.com/photos/${userType === 'employee' ? '3184418' : '3184465'}/pexels-photo-${userType === 'employee' ? '3184418' : '3184465'}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`,
+      points: userType === 'user' ? 1250 : undefined,
+      trainingProgress: 75
     };
-
-    onSignupSuccess(userData);
-    onClose();
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    
+    localStorage.setItem('currentUser', JSON.stringify(userData));
+  onSignupSuccess(userData);
   };
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-[fadeIn_0.3s_ease-out] max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-md w-full p-6 relative animate-[fadeIn_0.3s_ease-out]">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
@@ -59,13 +48,7 @@ const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, onSignupSucc
           <X className="h-6 w-6" />
         </button>
 
-        <div className="text-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <UserPlus className="h-8 w-8 text-white" />
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
-          <p className="text-gray-600">Join our sustainable community</p>
-        </div>
+  <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Sign Up</h2>
 
         {/* User Type Selection */}
         <div className="flex mb-6">
@@ -95,112 +78,31 @@ const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, onSignupSucc
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-              Full Name
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              Email Address
             </label>
             <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-              Email Address
-            </label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                required
-              />
-            </div>
-          </div>
-
-          {userType === 'employee' && (
-            <>
-              <div>
-                <label htmlFor="employeeId" className="block text-sm font-medium text-gray-700 mb-1">
-                  Employee ID
-                </label>
-                <input
-                  type="text"
-                  id="employeeId"
-                  name="employeeId"
-                  value={formData.employeeId}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="department" className="block text-sm font-medium text-gray-700 mb-1">
-                  Department
-                </label>
-                <select
-                  id="department"
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  required
-                >
-                  <option value="">Select Department</option>
-                  <option value="operations">Operations</option>
-                  <option value="logistics">Logistics</option>
-                  <option value="processing">Processing</option>
-                  <option value="quality">Quality Control</option>
-                  <option value="management">Management</option>
-                </select>
-              </div>
-            </>
-          )}
-
-          <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
-                required
-              />
-            </div>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+              required
+            />
           </div>
 
           <button
@@ -211,12 +113,12 @@ const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, onSignupSucc
                 : 'bg-blue-600 hover:bg-blue-700'
             }`}
           >
-            Create {userType === 'user' ? 'User' : 'Employee'} Account
+            Login as {userType === 'user' ? 'User' : 'Employee'}
           </button>
         </form>
 
         <p className="text-sm text-gray-500 text-center mt-4">
-          Already have an account? <span onClick={onSwitchToLogin} className="text-green-600 cursor-pointer hover:underline">Sign in</span>
+          Already have an account? <span onClick={onSwitchToLogin} className="text-green-600 cursor-pointer hover:underline">Login</span>
         </p>
       </div>
     </div>

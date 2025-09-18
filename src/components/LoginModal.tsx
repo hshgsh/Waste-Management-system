@@ -18,15 +18,20 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLoginSuccess
     
     // Simulate login success
     const userData = {
-      name: userType === 'user' ? 'John Doe' : 'Sarah Johnson',
+      id: Date.now(),
+      name: userType === 'user' ? 'Akshat Sahu' : 'Akshat Sahu',
       email,
+      phone: '+91-9876543210',
       userType,
       department: userType === 'employee' ? 'Operations' : undefined,
       employeeId: userType === 'employee' ? 'EMP001' : undefined,
       joinDate: '2024-01-15',
-      avatar: `https://images.pexels.com/photos/${userType === 'employee' ? '3184418' : '3184465'}/pexels-photo-${userType === 'employee' ? '3184418' : '3184465'}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`
+      avatar: `https://images.pexels.com/photos/${userType === 'employee' ? '3184418' : '3184465'}/pexels-photo-${userType === 'employee' ? '3184418' : '3184465'}.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop`,
+      points: userType === 'user' ? 1250 : undefined,
+      trainingProgress: 75
     };
     
+    localStorage.setItem('currentUser', JSON.stringify(userData));
     onLoginSuccess(userData);
   };
 
