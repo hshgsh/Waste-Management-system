@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Truck, Package, Recycle, Leaf, ArrowRight, Users, Building, Globe } from 'lucide-react';
 import Chatbot from '../components/Chatbot';
 
@@ -40,7 +41,7 @@ const ServicesPage = () => {
         },
         {
           name: 'EPR Services',
-          description: 'The Eco-Saviors as a registered PRO, official collection & recycling partner helps in the compliance process of EPR.',
+          description: 'The Kabadiwala as a registered PRO, official collection & recycling partner helps in the compliance process of EPR.',
           icon: Leaf
         },
         {
@@ -60,7 +61,7 @@ const ServicesPage = () => {
         },
         {
           name: 'Paper Shredding',
-          description: 'Adding Businesses in the safe & secure disposal of their confidential documents.',
+          description: 'Aiding Businesses in the safe & secure disposal of their confidential documents.',
           icon: Package
         }
       ]
@@ -125,6 +126,12 @@ const ServicesPage = () => {
             >
               For Organisations
             </button>
+            <Link
+              to="/waste-reporting"
+              className="px-6 py-3 rounded-lg font-medium transition-colors duration-200 bg-orange-600 text-white hover:bg-orange-700"
+            >
+              Report Waste
+            </Link>
           </div>
         </div>
       </section>
@@ -181,10 +188,13 @@ const ServicesPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button 
-              onClick={() => window.open('mailto:contact@ecowaste.com', '_blank')}
+              onClick={() => {
+                window.open('mailto:contact@ecowaste.com', '_blank');
+                window.open('tel:+919876543210', '_blank');
+              }}
               className="bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 text-lg"
             >
-              Email Us
+              Contact Us
             </button>
             <button 
               onClick={() => window.open('tel:+919876543210', '_blank')}

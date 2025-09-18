@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Chatbot from '../components/Chatbot';
-import UserEnrollment from '../components/UserEnrollment';
 import { BookOpen, Users, Award, Play, Clock, CheckCircle, Star, Download, Calendar } from 'lucide-react';
 
 const TrainingPage = () => {
@@ -14,11 +14,11 @@ const TrainingPage = () => {
       duration: '2 hours',
       modules: 6,
       level: 'Beginner',
-      rating: 0.0,
-      students: 0,
+      rating: 4.8,
+      students: 1250,
       description: 'Learn the basics of waste categorization and proper sorting techniques',
       topics: ['Material identification', 'Contamination prevention', 'Safety protocols', 'Equipment usage'],
-      image: 'https://imgs.search.brave.com/w4_qiKY4YosDd_9UF427-6lxG0npgAT0TwbQWCFnF8I/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvbWFueS1nYXJi/YWdlLWNhbnMtd2l0/aC1zb3J0ZWQtZ2Fy/YmFnZS1zb3J0aW5n/LWdhcmJhZ2UtZWNv/bG9neS1yZWN5Y2xl/LWNvbmNlcHQtdHJh/c2gtY2Fucy1pc29s/YXRlZC13aGl0ZS1i/YWNrZ3JvdW5kLWZs/YXQtaWxsdXN0cmF0/aW9uc18xODAyNjQt/ODguanBnP3NlbXQ9/YWlzX2h5YnJpZCZ3/PTc0MCZxPTgw'
+      image: 'https://images.pexels.com/photos/3735709/pexels-photo-3735709.jpeg'
     },
     {
       id: 1,
@@ -26,11 +26,11 @@ const TrainingPage = () => {
       duration: '4 hours',
       modules: 8,
       level: 'Advanced',
-      rating: 0.0,
-      students: 0,
+      rating: 4.9,
+      students: 850,
       description: 'Deep dive into recycling technologies and quality control measures',
       topics: ['Processing methods', 'Quality standards', 'Technology operation', 'Maintenance protocols'],
-      image: 'https://imgs.search.brave.com/NL6v0VLSkHbboZwlRmaHHtEQn_EEYaNPfVqtvHQvvKw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/ZHJ1Z3BsYXN0aWNz/LmNvbS93cC1jb250/ZW50L3VwbG9hZHMv/MjAyMy8wNS9EUEct/QWR2YW5jZWQtUmVj/eWNsaW5nLmpwZw'
+      image: 'https://images.pexels.com/photos/3951628/pexels-photo-3951628.jpeg'
     },
     {
       id: 2,
@@ -38,11 +38,11 @@ const TrainingPage = () => {
       duration: '3 hours',
       modules: 5,
       level: 'Intermediate',
-      rating: 0.0,
-      students: 0,
+      rating: 4.7,
+      students: 950,
       description: 'Understanding environmental benefits and measuring impact',
       topics: ['Carbon footprint', 'Resource conservation', 'Impact metrics', 'Reporting systems'],
-      image: 'https://imgs.search.brave.com/CZ5Nol1twmOvGfvzMlTzf-LPr0YGMhtjHIIeDrkSS8w/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTE5/OTkwMDU2MS9waG90/by9lbnZpcm9ubWVu/dGFsLXByb2Zlc3Np/b25hbHMtYXQtd29y/ay5qcGc_cz02MTJ4/NjEyJnc9MCZrPTIw/JmM9bmZaR0cweW5r/WmtWY3Z2Q2RWVkgx/aGVzMklkYkRqYlQy/dVNhUFBBMF90VT0'
+      image: 'https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg'
     },
     {
       id: 3,
@@ -50,11 +50,11 @@ const TrainingPage = () => {
       duration: '3.5 hours',
       modules: 7,
       level: 'Intermediate',
-      rating: 0.0,
-      students: 0,
+      rating: 4.6,
+      students: 720,
       description: 'Learn how to engage communities in waste management initiatives',
       topics: ['Community outreach', 'Behavior change', 'Program design', 'Success measurement'],
-      image: 'https://imgs.search.brave.com/NvT0m58pgS9C3gypTCnozsOts950Bgy1eECtmzwJkd8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9ldnJl/a2EuY28vd3AtY29u/dGVudC91cGxvYWRz/LzIwMjEvMDEvQ2l0/aXplbi1Db250cmli/dXRpb24taW4tV2Fz/dGUtTWFuYWdlbWVu/dC5qcGc'
+      image: 'https://images.pexels.com/photos/2988232/pexels-photo-2988232.jpeg'
     }
   ];
 
@@ -87,7 +87,7 @@ const TrainingPage = () => {
           <div className="flex flex-wrap justify-center gap-4">
             <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
               <Users className="h-5 w-5 text-green-400" />
-              <span>0 Students</span>
+              <span>3,000+ Students</span>
             </div>
             <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg">
               <Award className="h-5 w-5 text-yellow-400" />
@@ -308,16 +308,14 @@ const TrainingPage = () => {
           <p className="text-xl text-green-100 mb-8">
             Join thousands of professionals who have enhanced their skills with our training programs.
           </p>
-          <h1
+          <Link
+            to="/enrollment"
             className="bg-white text-green-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200 text-lg"
           >
-            
-            Enroll Now 
-          </h1>
-            
+            Enroll Now
+          </Link>
         </div>
       </section>
-      <UserEnrollment />
       <Chatbot />
     </div>
   );

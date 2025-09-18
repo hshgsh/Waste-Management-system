@@ -24,6 +24,7 @@ const Header: React.FC<HeaderProps> = () => {
   }, []);
 
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState<any>(null);
@@ -34,7 +35,7 @@ const Header: React.FC<HeaderProps> = () => {
   const handleLoginSuccess = (user: any) => {
     setUserData(user);
     setIsLoggedIn(true);
-    // Modal handled by router
+    setIsLoginOpen(false);
   };
 
   const handleSignupSuccess = (user: any) => {
@@ -61,7 +62,7 @@ const Header: React.FC<HeaderProps> = () => {
 
   return (
     <>
-  <header className={`fixed top-0 w-full z-50 transition-colors duration-700 backdrop-blur-sm opacity-85 ${scrolled ? 'bg-green-500 shadow-md' : 'bg-transparent'}`}>
+  <header className={`fixed top-0 w-full z-50 transition-colors duration-700 backdrop-blur-sm opacity-85 text-white ${scrolled ? 'bg-green-950 opacity-85' : 'bg-green-950 opacity-85'}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
@@ -69,7 +70,7 @@ const Header: React.FC<HeaderProps> = () => {
               <div className="w-10 h-10 rounded-full flex items-center justify-center">
                 <span className="text-black font-bold text-xl"></span>
               </div>
-              <span className="text-2xl font-bold text-emerald-950">Eco-saviors</span>
+              <span className="text-2xl font-bold text-white">Eco-saviors</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -82,7 +83,7 @@ const Header: React.FC<HeaderProps> = () => {
               >
                 <Link
                   to="/services"
-                  className="flex items-center space-x-1 text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
+                  className="flex items-center space-x-1 text-white hover:text-green-400 transition-colors duration-200 font-medium"
                   onClick={() => setShowServicesDropdown(!showServicesDropdown)}
                 >
                   <span>Services</span>
@@ -119,7 +120,7 @@ const Header: React.FC<HeaderProps> = () => {
               >
                 <Link
                   to="/company"
-                  className="flex items-center space-x-1  text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
+                  className="flex items-center space-x-1  text-white hover:text-green-400 transition-colors duration-200 font-medium"
                   onClick={() => setShowCompanyDropdown(!showCompanyDropdown)}
                 >
                   <span>Company</span>
@@ -144,14 +145,14 @@ const Header: React.FC<HeaderProps> = () => {
               {/* Training */}
               <Link
                 to="/training"
-                className=" text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
+                className=" text-white hover:text-green-400 transition-colors duration-200 font-medium"
               >
                 Training
               </Link>
                  {/* Shopping */}
             <Link
               to="/shopping"
-              className=" text-emerald-950 hover:text-green-400 transition-colors duration-200 font-medium"
+              className=" text-white hover:text-green-400 transition-colors duration-200 font-medium"
             >
               Shopping
             </Link>
@@ -165,8 +166,8 @@ const Header: React.FC<HeaderProps> = () => {
               {!isLoggedIn ? (
                 <>
                   <button
-                    onClick={() => navigate('/login')}
-                    className="flex items-center space-x-2 bg-green-800 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-all duration-200"
+                    onClick={() => setIsLoginOpen(true)}
+                    className="flex items-center space-x-2 bg-yellow-50 text-black px-6 py-2 rounded-full transition-all duration-200"
                   >
                     <LogIn className="h-4 w-4" />
                     <span>Login</span>
@@ -290,13 +291,22 @@ const Header: React.FC<HeaderProps> = () => {
       </header>
 
       {/* Modals */}
-      {/* LoginModal handled by router at /login */}
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+        onSwitchToSignup={() => {
+          setIsLoginOpen(false);
+          setIsSignupOpen(true);
+        }}
+      />
       <SignupModal 
         isOpen={isSignupOpen} 
         onClose={() => setIsSignupOpen(false)}
         onSignupSuccess={handleSignupSuccess}
         onSwitchToLogin={() => {
           setIsSignupOpen(false);
+          setIsLoginOpen(true);
         }}
       />
       <UserProfile

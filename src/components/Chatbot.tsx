@@ -55,7 +55,7 @@ const Chatbot = () => {
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
       
-      recognitionRef.current.onresult = (event) => {
+  recognitionRef.current.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript;
         setInputMessage(transcript);
         setIsListening(false);
@@ -111,7 +111,7 @@ const Chatbot = () => {
     }
   };
 
-  const getBotResponse = (userMessage, language) => {
+  const getBotResponse = (userMessage: string, language: string) => {
     const message = userMessage.toLowerCase();
     
     const responses = {
@@ -133,7 +133,7 @@ const Chatbot = () => {
       }
     };
 
-    const langResponses = responses[language] || responses['en'];
+  const langResponses = responses[language as keyof typeof responses] || responses['en'];
     
     if (message.includes('segregate') || message.includes('separate') || message.includes('अलग')) {
       return langResponses.segregate;
@@ -165,7 +165,7 @@ const Chatbot = () => {
     }
   };
 
-  const speakMessage = (text, language) => {
+  const speakMessage = (text: string, language: string) => {
     if (synthRef.current) {
       synthRef.current.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
@@ -198,7 +198,7 @@ const Chatbot = () => {
     }
   };
 
-  const handleQuickReply = (reply) => {
+  const handleQuickReply = (reply: string) => {
     setInputMessage(reply);
     handleSendMessage();
   };
@@ -309,7 +309,7 @@ const Chatbot = () => {
             <div className="px-4 pb-2">
               <p className="text-xs text-gray-500 mb-2">Quick replies:</p>
               <div className="flex flex-wrap gap-2">
-                {(quickReplies[selectedLanguage] || quickReplies['en']).map((reply, index) => (
+                {(quickReplies[selectedLanguage as keyof typeof quickReplies] || quickReplies['en']).map((reply: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => handleQuickReply(reply)}
